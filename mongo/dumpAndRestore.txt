@@ -1,0 +1,27 @@
+docker run --name=mongo  --env=MONGO_INITDB_ROOT_USERNAME=root --env=MONGO_INITDB_ROOT_PASSWORD=password  --volume=/host/path/data:/data/db --volume=/host/path/data/configdb:/data/configdb  --volume=/data/configdb  --volume=/data/db -p 27017:27017 --restart=always  mongo
+#docker cp mongodump mongo:/mongodump
+docker exec -it mongo bash
+mongo -u root -p $MONGO_INITDB_ROOT_PASSWORD
+
+use tradex-market
+db.createUser(
+{	user: "user1",
+	pwd: "pswd",
+	roles:[
+	{role: "readWrite" , db:"market"},
+    { role : "userAdmin", db : "market"  }
+	]})
+
+#verify by show users
+use admin  #to add user into admin, so we don't have to specify -authenticationDatabase (name of database where user is created)
+db.createUser(
+{	user: "user2",
+	pwd: "pswd",
+	roles:[
+	{role: "readWrite" , db:"market"},
+    { role : "userAdmin", db : "market"  }
+	]})
+
+
+#you can only restore a db with user X if you create that user use that db
+mongorestore -u AAA -p BBB -d CCC /path/to/folder (--gzip if folder contains gzip)
