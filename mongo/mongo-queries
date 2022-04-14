@@ -1,0 +1,12 @@
+db.collection.updateMany({_id : {$regex: "abcde"}, field: {$lt: 1000}}, {$mul: {field1: 100,field2: 100}}) 
+db.collection.aggregate( [
+   {
+      $match: {_id : {$regex: /^abc_20220101/}}
+   },
+   {
+      $group: { _id: "$field1",  abcde: { $sum: "$field2" }  }
+   }
+] )
+
+#export query results to file
+mongoexport -u root -p password --authenticationDatabase=admin --db=test --collection=col  --fields=_id,name,age --query='{age : {$gte: 20}}' --out=info.json
