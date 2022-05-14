@@ -25,3 +25,7 @@ db.createUser(
 
 #you can only restore a db with user X if you create that user use that db
 mongorestore -u AAA -p BBB -d CCC /path/to/folder (--gzip if folder contains gzip)
+
+mongoexport -u root -p PASSWORD --authenticationDatabase=admin --db=market --collection=stock_daily  --fields=_id,volume,value,open,high,low,last,change,rate --query='{code:"REE", date: {$gte: { "$date": "2021-04-24T00:00:00.001Z"}, $lte: { "$date": "2022-04-06T23:59:59.000Z"}}}'  --out=ree.json
+
+mongoimport  -u USER -p PASSWORD --authenticationDatabase=market --dbmarket  --collection  symbol_daily  --file motmp/vnindex.json --jsonArray

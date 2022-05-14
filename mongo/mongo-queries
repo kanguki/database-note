@@ -9,4 +9,7 @@ db.collection.aggregate( [
 ] )
 
 #export query results to file
+#https://stackoverflow.com/questions/36319052/use-mongoexport-with-a-query-for-isodate
 mongoexport -u root -p password --authenticationDatabase=admin --db=test --collection=col  --fields=_id,name,age --query='{age : {$gte: 20}}' --out=info.json
+
+mongoimport -u root -p password --authenticationDatabase=admin --db=test --collection=col  --db tradex-market  --collection  col  --file info.json
